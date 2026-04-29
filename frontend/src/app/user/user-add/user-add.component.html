@@ -1,0 +1,197 @@
+<div class="p-6 max-w-2xl mx-auto">
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="flex items-center justify-center py-20">
+    <div class="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+
+      <!-- Header -->
+      <div class="flex items-center gap-4 px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+        <div class="w-13 h-13 w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-lg font-semibold text-emerald-700 dark:text-emerald-400 flex-shrink-0">
+          {{ getInitials() }}
+        </div>
+        <div>
+          <h2 class="text-base font-semibold text-gray-900 dark:text-white">
+            {{ isEditMode ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur' }}
+          </h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            {{ isEditMode ? 'Mettre à jour les informations' : 'Remplir les champs requis' }}
+          </p>
+          <span class="inline-flex items-center gap-1.5 mt-1.5 text-[11px] font-medium bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            Actif
+          </span>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="px-6 py-6 space-y-6">
+
+        <!-- Error banner -->
+        <div *ngIf="errorMessage" class="flex items-center gap-2 px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-700 dark:text-red-400">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="1" fill="currentColor"/>
+          </svg>
+          {{ errorMessage }}
+        </div>
+
+        <!-- Section: Informations personnelles -->
+        <div>
+          <p class="text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-4">Informations personnelles</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <!-- Prénom -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                Prénom <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+                <input formControlName="first_name" type="text" placeholder="Prénom"
+                  class="w-full pl-8 pr-3 h-9 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                  [ngClass]="f['first_name'].invalid && f['first_name'].touched ? 'border-red-400 dark:border-red-600' : 'border-gray-200 dark:border-gray-600'" />
+              </div>
+              <p *ngIf="f['first_name'].invalid && f['first_name'].touched" class="text-[11px] text-red-500 mt-1">
+                Prénom requis (min. 2 caractères)
+              </p>
+            </div>
+
+            <!-- Nom -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                Nom <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+                <input formControlName="last_name" type="text" placeholder="Nom"
+                  class="w-full pl-8 pr-3 h-9 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                  [ngClass]="f['last_name'].invalid && f['last_name'].touched ? 'border-red-400 dark:border-red-600' : 'border-gray-200 dark:border-gray-600'" />
+              </div>
+              <p *ngIf="f['last_name'].invalid && f['last_name'].touched" class="text-[11px] text-red-500 mt-1">
+                Nom requis (min. 2 caractères)
+              </p>
+            </div>
+
+            <!-- Username -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                Nom d'utilisateur <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                <input formControlName="username" type="text" placeholder="ex: jean.dupont"
+                  class="w-full pl-8 pr-3 h-9 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                  [ngClass]="f['username'].invalid && f['username'].touched ? 'border-red-400 dark:border-red-600' : 'border-gray-200 dark:border-gray-600'" />
+              </div>
+              <p class="text-[11px] text-gray-400 mt-1">Unique, sans espaces</p>
+              <p *ngIf="f['username'].invalid && f['username'].touched" class="text-[11px] text-red-500 mt-1">
+                Username requis, sans espaces (min. 3 caractères)
+              </p>
+            </div>
+
+            <!-- Âge -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Âge</label>
+              <div class="relative">
+                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <input formControlName="age" type="number" placeholder="Âge" min="0" max="120"
+                  class="w-full pl-8 pr-3 h-9 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all" />
+              </div>
+              <p *ngIf="f['age'].invalid && f['age'].touched" class="text-[11px] text-red-500 mt-1">
+                Âge invalide (0–120)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-gray-100 dark:border-gray-800">
+
+        <!-- Section: Coordonnées -->
+        <div>
+          <p class="text-[11px] font-medium text-gray-400 uppercase tracking-widest mb-4">Coordonnées</p>
+
+          <div class="max-w-2xl mx-auto p-6">
+
+            <!-- Email -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                Email <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <input formControlName="email" type="email" placeholder="email@exemple.com"
+                  class="w-full pl-8 pr-3 h-9 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                  [ngClass]="f['email'].invalid && f['email'].touched ? 'border-red-400 dark:border-red-600' : 'border-gray-200 dark:border-gray-600'" />
+               
+                </div>
+                <div class="relative">
+                        <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                Password <span class="text-red-500">*</span>
+              </label>
+                       <input formControlName="password" type="password" 
+                  class="w-full pl-8 pr-3 h-9 text-sm border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                  [ngClass]="f['password'].invalid && f['password'].touched ? 'border-red-400 dark:border-red-600' : 'border-gray-200 dark:border-gray-600'" />
+             
+                </div>
+              <p class="text-[11px] text-gray-400 mt-1">Utilisé pour la connexion — doit être unique</p>
+              <p *ngIf="f['email'].invalid && f['email'].touched" class="text-[11px] text-red-500 mt-1">
+                Email invalide ou requis
+              </p>
+            </div>
+
+            <!-- Téléphone -->
+            <div>
+              <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">Téléphone</label>
+              <div class="relative">
+                <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16.92z"/>
+                </svg>
+                <input formControlName="phone" type="tel" placeholder="+216 99 000 000"
+                  class="w-full pl-8 pr-3 h-9 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all" />
+              </div>
+              <p *ngIf="f['phone'].invalid && f['phone'].touched" class="text-[11px] text-red-500 mt-1">
+                Format invalide (max 15 caractères)
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer actions -->
+      <div class="flex items-center justify-between px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700">
+        <span class="text-[11px] text-gray-400"><span class="text-red-500">*</span> Champs obligatoires</span>
+        <div class="flex items-center gap-2">
+          <button type="button" (click)="onCancel()"
+            class="h-8 px-4 text-xs border border-gray-200 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+            Annuler
+          </button>
+          <button type="submit" [disabled]="isSaving"
+            class="h-8 px-4 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed">
+            <svg *ngIf="!isSaving" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <div *ngIf="isSaving" class="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            {{ isSaving ? 'Enregistrement...' : 'Enregistrer' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

@@ -1,0 +1,163 @@
+<div class="max-w-2xl mx-auto p-6">
+  <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Modifier la trottinette</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        Modifiez les informations de la trottinette
+      </p>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="flex items-center justify-center py-20">
+      <div class="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Form -->
+    <form *ngIf="!isLoading" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- QR Code -->
+      <div>
+        <label for="QR_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          QR Code <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="QR_code"
+          [(ngModel)]="trottinette.QR_code"
+          name="QR_code"
+          required
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+          placeholder="Entrez le code QR" />
+      </div>
+
+      <!-- Model -->
+      <div>
+        <label for="model" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Modèle <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="model"
+          [(ngModel)]="trottinette.model"
+          name="model"
+          required
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+          placeholder="Entrez le modèle" />
+      </div>
+
+      <!-- Status -->
+      <div>
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Statut
+        </label>
+        <select
+          id="status"
+          [(ngModel)]="trottinette.status"
+          name="status"
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+          <option value="disponible">Disponible</option>
+          <option value="en utilisation">En utilisation</option>
+          <option value="maintenance">Maintenance</option>
+          <option value="hors service">Hors service</option>
+        </select>
+      </div>
+
+      <!-- Zone -->
+      <div>
+        <label for="zone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Zone
+        </label>
+        <select
+          id="zone"
+          [(ngModel)]="trottinette.zone"
+          name="zone"
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+          <option [ngValue]="null">-- Sélectionner une zone --</option>
+          <option *ngFor="let zone of zones" [ngValue]="zone.id">
+            {{ zone.nom }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Price per minute -->
+      <div>
+        <label for="price_per_minute" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Prix par minute (TND)
+        </label>
+        <input
+          type="number"
+          id="price_per_minute"
+          [(ngModel)]="trottinette.price_per_minute"
+          name="price_per_minute"
+          step="0.01"
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+          placeholder="0.00" />
+      </div>
+
+      <!-- Battery -->
+      <div>
+        <label for="battery" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Batterie (%)
+        </label>
+        <input
+          type="number"
+          id="battery"
+          [(ngModel)]="trottinette.battery"
+          name="battery"
+          min="0"
+          max="100"
+          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+          placeholder="100" />
+      </div>
+
+      <!-- Image Upload -->
+      <div>
+        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Image
+        </label>
+        <div class="space-y-3">
+          <input
+            type="file"
+            id="image"
+            (change)="onImageSelected($event)"
+            accept="image/*"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900 dark:file:text-emerald-300"
+          />
+          <div *ngIf="selectedImage || trottinette.image" class="flex items-center gap-3">
+            <button
+              type="button"
+              (click)="removeImage()"
+              class="px-3 py-1 text-sm font-medium text-red-600 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
+            >
+              Supprimer l'image
+            </button>
+          </div>
+          <div *ngIf="imagePreview" class="mt-3">
+            <img [src]="imagePreview" alt="Aperçu de l'image" class="max-w-xs max-h-48 rounded-lg shadow-md border border-gray-200 dark:border-gray-700" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+          Annuler
+        </button>
+        <button
+          type="submit"
+          [disabled]="!trottinette.QR_code.trim() || !trottinette.model.trim() || isSubmitting"
+          class="px-4 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2">
+          <span *ngIf="isSubmitting" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          Modifier la trottinette
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

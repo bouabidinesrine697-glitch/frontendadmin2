@@ -1,0 +1,92 @@
+<main class="max-w-4xl mx-auto p-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="font-display text-2xl font-bold text-[#1a1c24]">Tableau de bord</h1>
+      <p class="text-xs text-[#aaa] font-mono mt-0.5">{{ today | date:'EEEE d MMMM yyyy' }}</p>
+    </div>
+    <div class="flex gap-2.5">
+      <button class="bg-white border border-[#e4e7f0] rounded-lg px-4 py-1.5 text-xs text-[#888] hover:border-[#00b37e] transition-colors">
+        Exporter CSV
+      </button>
+      <button class="bg-[#00b37e] text-white rounded-lg px-4 py-1.5 text-xs font-medium font-mono hover:opacity-90 transition-opacity">
+        + Ajouter trottinette
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-4 gap-3.5 mt-6">
+    <div *ngFor="let kpi of kpiCards"
+         class="bg-white border border-[#e4e7f0] hover:border-[#00b37e] rounded-xl p-[18px] transition-colors shadow-sm">
+      <div class="text-[11px] text-[#aaa] font-mono mb-2 tracking-wide">{{ kpi.label }}</div>
+      <div class="font-display text-3xl font-bold" [style.color]="kpi.color">{{ kpi.value }}</div>
+      <div class="text-xs mt-1" [ngClass]="kpi.trendUp ? 'text-[#00b37e]' : 'text-[#f59e0b]'">{{ kpi.trend }}</div>
+    </div>
+  </div>
+
+  <!-- Fleet Status + Map -->
+  <div class="grid gap-3.5 mt-5" style="grid-template-columns: 1fr 1.4fr">
+
+    <div class="bg-white border border-[#e4e7f0] rounded-xl p-5 shadow-sm">
+      <h2 class="font-display font-bold mb-4 text-[#1a1c24]">État de la flotte</h2>
+      <div *ngFor="let status of fleetStatuses" class="mb-3.5">
+        <div class="flex justify-between text-xs mb-1.5">
+          <span class="text-[#888]">{{ status.label }}</span>
+          <span class="font-mono" [style.color]="status.color">{{ status.count }} / 142</span>
+        </div>
+        <div class="h-1.5 bg-[#eef0f8] rounded-full overflow-hidden">
+          <div class="h-full rounded-full transition-all duration-700"
+               [style.width.%]="status.percent" [style.background]="status.color"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white border border-[#e4e7f0] rounded-xl p-5 shadow-sm">
+      <h2 class="font-display font-bold mb-3.5 text-[#1a1c24]">Carte en temps réel — Tunis</h2>
+      <div class="relative h-52 bg-[#eef2fc] rounded-lg border border-[#e4e7f0] overflow-hidden">
+        <div *ngFor="let dot of mapDots"
+             class="absolute w-2.5 h-2.5 rounded-full"
+             [ngClass]="dot.pulse ? 'animate-pulse' : ''"
+             [style.top]="dot.top" [style.left]="dot.left" [style.background]="dot.color">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Trips Table -->
+  <div class="bg-white border border-[#e4e7f0] rounded-xl p-5 mt-5 shadow-sm">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="font-display font-bold text-[#1a1c24]">Derniers trajets</h2>
+      <button class="text-xs text-[#00b37e] font-mono hover:underline">Voir tout →</button>
+    </div>
+    <table class="w-full text-sm border-collapse">
+      <thead>
+        <tr class="border-b border-[#f0f2f8]">
+          <th *ngFor="let col of tableColumns"
+              class="text-left pb-2.5 pr-3 text-[11px] text-[#bbb] font-medium font-mono tracking-wide">
+            {{ col }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trip of recentTrips; let last = last"
+            class="hover:bg-[#f8faff] transition-colors"
+            [ngClass]="!last ? 'border-b border-[#f0f2f8]' : ''">
+          <td class="py-2.5 pr-3 text-[#aaa] font-mono text-xs">{{ trip.id }}</td>
+          <td class="py-2.5 pr-3 text-[#1a1c24]">{{ trip.client }}</td>
+          <td class="py-2.5 pr-3 font-mono text-xs" [style.color]="trip.scootColor">{{ trip.scooter }}</td>
+          <td class="py-2.5 pr-3 text-[#888]">{{ trip.duration }}</td>
+          <td class="py-2.5 pr-3 text-[#888]">{{ trip.distance }}</td>
+          <td class="py-2.5 pr-3 font-medium text-[#1a1c24]">{{ trip.amount }}</td>
+          <td class="py-2.5">
+            <span class="text-[11px] font-mono rounded-md px-2.5 py-0.5"
+                  [ngClass]="getBadgeClass(trip.status)">{{ trip.status }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
