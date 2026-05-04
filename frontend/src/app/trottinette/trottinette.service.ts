@@ -52,7 +52,7 @@ export class TrottinetteService {
   }
 
   deleteTrottinette(id: number): Observable<any> {
-    return this.http.delete(this.apiUrl + `TrottinetteDelete/${id}/`);
+    return this.http.delete(`${this.apiUrl}${id}/delete/`);
   }
 
   getAvailableTrottinettes(): Observable<Trottinette[]> {
@@ -80,6 +80,13 @@ export class TrottinetteService {
   addTrottinetteBooking(booking: any): Observable<any> {
     return this.http.post(this.apiUrl + 'TrottinetteBookingAdd/', booking);
   }
+
+  // ✅ CORRIGÉES ICI
+  confirmBooking(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}bookings/${id}/confirm/`, {});
+  }
+
+  refuserBooking(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}bookings/${id}/refuser/`, {});
+  }
 }
-
-

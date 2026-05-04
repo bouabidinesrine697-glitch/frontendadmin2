@@ -118,8 +118,13 @@
           <td class="px-4 py-3">
             <div class="flex items-center justify-end gap-1">
 
+
+  <span *ngIf="trottinette.status === 'confirmée'" class="badge bg-success">✅ Confirmée</span>
+  <span *ngIf="trottinette.status === 'refusée'" class="badge bg-danger">❌ Refusée</span>
+           
               <!-- Confirm delete -->
               <ng-container *ngIf="deleteConfirmId === trottinette.id; else normalActions">
+
                 <span class="text-[11px] text-gray-500 mr-2">Confirmer ?</span>
                 <button (click)="onDelete(trottinette.id!)"
                   class="px-2 py-1 text-[11px] font-medium bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors">

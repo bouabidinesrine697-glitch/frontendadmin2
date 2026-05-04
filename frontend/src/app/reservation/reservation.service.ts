@@ -12,9 +12,8 @@ export class ReservationService {
 
   constructor(private http: HttpClient) { }
 
-  // Reservation CRUD
   getReservations(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(this.apiUrl + 'list/');
+    return this.http.get<Reservation[]>(this.apiUrl + 'TrottinetteBookingList/');
   }
 
   getReservation(id: number): Observable<Reservation> {
@@ -26,7 +25,7 @@ export class ReservationService {
   }
 
   updateReservation(id: number, reservation: Reservation): Observable<Reservation> {
-    return this.http.put<Reservation>(`${this.apiUrl}TrottinetteBooking/${id}/`, reservation);
+    return this.http.put<Reservation>(`${this.apiUrl}trottinettebookingupdate/${id}/`, reservation);
   }
 
   endReservation(bookingId: number): Observable<any> {
@@ -40,8 +39,12 @@ export class ReservationService {
   getTrottinetteStats(): Observable<any> {
     return this.http.get(`${this.apiUrl}TrottinetteStats/`);
   }
+  confirmReservation(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}bookingconfirm/${id}/`, {});
+  }
 
   deleteReservation(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}${id}/`);
   }
+
 }

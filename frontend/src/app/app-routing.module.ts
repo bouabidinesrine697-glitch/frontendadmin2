@@ -9,7 +9,8 @@ const routes: Routes = [
   {path:"zone",loadChildren:()=>import("./zone/zone.module").then(m=>m.ZoneModule)},
   {path:"trottinette",loadChildren:()=>import("./trottinette/trottinette.module").then(m=>m.TrottinetteModule)},
   {path:"reservation",loadChildren:()=>import("./reservation/reservation.module").then(m=>m.ReservationModule)},
-  {path:"dashboard",loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.DashboardModule)}
+  {path:"dashboard",loadChildren:()=>import("./dashboard/dashboard.module").then(m=>m.DashboardModule)},
+  { path: 'facture', loadChildren: () =>import('./facture/facture.module').then((m) => m.FactureModule)}
 
 ];
 

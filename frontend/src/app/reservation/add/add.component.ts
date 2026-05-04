@@ -14,9 +14,11 @@ export class AddComponent implements OnInit {
 
   reservation: Reservation = {
     trottinette: 0,
-    user: 1, // Default user ID, should be from auth service
+    user: 1,
     start_time: new Date().toISOString(),
-    total_cost: 0
+    total_cost: 0,
+    id: 0,
+    status: ''
   };
 
   trottinettes: Trottinette[] = [];
@@ -35,7 +37,6 @@ export class AddComponent implements OnInit {
   loadTrottinettes(): void {
     this.trottinetteService.getTrottinetteList().subscribe({
       next: (data: Trottinette[]) => {
-        // Only show available trottinettes
         this.trottinettes = data.filter(t => t.status === 'disponible');
       }
     });

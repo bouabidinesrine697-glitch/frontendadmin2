@@ -1,10 +1,12 @@
 export interface Reservation {
-  id?: number;
-  trottinette: number; // Foreign key to Trottinette id
-  user: number; // Foreign key to User id
-  start_time: string; // ISO date string
-  end_time?: string; // ISO date string, optional
+  id: number; 
+  status: string;
+  start_time: string;
+  Trottinette?: number;  
+  trottinette?: number;  
+  user: number;
+  end_time?: string;
   total_cost: number;
-  trottinette_details?: any; // For displaying trottinette info
-  user_details?: any; // For displaying user info
+  trottinette_details?: { model: string; QR_code: string; };
+  user_details?: { username: string; email: string; };
 }

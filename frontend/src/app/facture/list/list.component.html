@@ -1,0 +1,61 @@
+<div class="max-w-4xl mx-auto p-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Factures</h1>
+    <button (click)="goToAdd()"
+      class="px-4 py-2 text-sm font-medium bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nouvelle facture
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="flex items-center justify-center py-16">
+    <div class="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Empty -->
+  <div *ngIf="!isLoading && factures.length === 0"
+    class="text-center py-16 text-gray-400 dark:text-gray-500 text-sm">
+    Aucune facture trouvée.
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!isLoading && factures.length > 0"
+    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-xs uppercase">
+        <tr>
+          <th class="px-4 py-3 text-left">#</th>
+          <th class="px-4 py-3 text-left">Client</th>
+          <th class="px-4 py-3 text-left">Date</th>
+          <th class="px-4 py-3 text-left">Montant</th>
+          <th class="px-4 py-3 text-left">Statut</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+        <tr *ngFor="let f of factures" class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+          <td class="px-4 py-3 text-gray-500">{{ f.id }}</td>
+          <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ f.client }}</td>
+          <td class="px-4 py-3 text-gray-500">{{ f.date_creation }}</td>
+          <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">{{ f.montant_total }} DT</td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 rounded-full text-xs font-medium"
+              [ngClass]="{
+                'bg-yellow-100 text-yellow-700': f.statut === 'en_attente',
+                'bg-green-100 text-green-700': f.statut === 'payee',
+                'bg-red-100 text-red-700': f.statut === 'annulee'
+              }">
+              {{ f.statut === 'en_attente' ? 'En attente' : f.statut === 'payee' ? 'Payée' : 'Annulée' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

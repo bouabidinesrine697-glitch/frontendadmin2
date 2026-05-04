@@ -79,4 +79,32 @@ export class ListComponent implements OnInit {
       }
     });
   }
+  async onRefuser(id:any): Promise<void> {
+    let trottinette = await this.trottinettes.find(t => t.id === id);
+    if (trottinette) {  
+
+    this.trottinetteService.updateTrottinette(id, { ...trottinette, status: 'maintenance' }).subscribe({
+      next: () => {
+        this.loadTrottinettes();
+      }
+    });
+
+
 }
+  }
+   async onConfirm(id:any): Promise<void> {
+    let trottinette = await this.trottinettes.find(t => t.id === id);
+    if (trottinette) {  
+
+    this.trottinetteService.updateTrottinette(id, { ...trottinette, status: 'réserve' }).subscribe({
+      next: () => {
+        this.loadTrottinettes();
+      }
+    });
+
+
+}
+  }
+
+}
+

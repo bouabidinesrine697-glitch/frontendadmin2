@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../reservation.service';
+import { TrottinetteService } from '../../trottinette/trottinette.service';
 import { Router } from '@angular/router';
 import { Reservation } from '../reservation';
 
@@ -9,7 +10,6 @@ import { Reservation } from '../reservation';
   styleUrl: './list.component.css'
 })
 export class ListComponent implements OnInit {
-
   reservations: Reservation[] = [];
   filteredReservations: Reservation[] = [];
   isLoading = false;
@@ -18,6 +18,7 @@ export class ListComponent implements OnInit {
 
   constructor(
     private reservationService: ReservationService,
+    private trottinetteService: TrottinetteService,
     private router: Router
   ) {}
 
@@ -33,9 +34,7 @@ export class ListComponent implements OnInit {
         this.filteredReservations = data;
         this.isLoading = false;
       },
-      error: () => {
-        this.isLoading = false;
-      }
+      error: () => this.isLoading = false
     });
   }
 
@@ -43,6 +42,7 @@ export class ListComponent implements OnInit {
     this.searchQuery = query;
     const q = query.toLowerCase();
     this.filteredReservations = this.reservations.filter(r =>
+      r.trottinette_details?.model?.toLowerCase().includes(q) ||
       r.trottinette_details?.QR_code?.toLowerCase().includes(q) ||
       r.user_details?.username?.toLowerCase().includes(q)
     );
@@ -50,17 +50,6 @@ export class ListComponent implements OnInit {
 
   formatDate(dateString: string): string {
     return new Date(dateString).toLocaleString('fr-FR');
-  }
-
-  getStatus(reservation: Reservation): string {
-    if (reservation.end_time) {
-      return 'Terminée';
-    }
-    return 'En cours';
-  }
-
-  getStatusColor(reservation: Reservation): string {
-    return reservation.end_time ? 'text-green-600' : 'text-blue-600';
   }
 
   onEdit(id: number): void {
@@ -91,9 +80,27 @@ export class ListComponent implements OnInit {
 
   onEndReservation(bookingId: number): void {
     this.reservationService.endReservation(bookingId).subscribe({
-      next: () => {
-        this.loadReservations(); // Reload to get updated data
-      }
+      next: () => this.loadReservations()
     });
   }
+
+onConfirm(id: number): void {
+  this.reservationService.confirmReservation(id).subscribe({
+    next: () => {
+      const r = this.reservations.find(r => r.id === id);
+      if (r) r.status = 'confirmée';
+    },
+    error: (err: any) => console.error(err) 
+  });
+}
+
+onRefuser(id: number): void {
+  this.trottinetteService.refuserBooking(id).subscribe({
+    next: () => {
+      const r = this.reservations.find(r => r.id === id);
+      if (r) r.status = 'refusée';
+    },
+    error: (err: any) => console.error(err)  
+  });
+}
 }

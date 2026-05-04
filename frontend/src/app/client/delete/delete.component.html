@@ -1,1 +1,57 @@
-<p>delete works!</p>
+<div class="max-w-md mx-auto p-6">
+  <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+
+    <!-- Header -->
+    <div class="mb-6 text-center">
+      <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center mx-auto mb-4">
+        <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+          <line x1="18" y1="8" x2="23" y2="13"/>
+          <line x1="23" y1="8" x2="18" y2="13"/>
+        </svg>
+      </div>
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Supprimer le client</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        Êtes-vous sûr de vouloir supprimer ce client ?
+      </p>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="flex items-center justify-center py-10">
+      <div class="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Client Info -->
+    <div *ngIf="!isLoading && client" class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 flex-shrink-0">
+          {{ client.firstName[0].toUpperCase() || '?' }}
+        </div>
+        <div class="min-w-0">
+          <p class="text-[13px] font-medium text-gray-900 dark:text-white truncate">
+            {{ client.firstName }} {{ client.lastName }}
+          </p>
+          <p class="text-[11px] text-gray-500 truncate">Email: {{ client.email }} | Tél: {{ client.phone }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div *ngIf="!isLoading" class="flex items-center justify-end gap-3">
+      <button
+        (click)="onCancel()"
+        class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+        Annuler
+      </button>
+      <button
+        (click)="onDelete()"
+        [disabled]="isDeleting"
+        class="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2">
+        <span *ngIf="isDeleting" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+        Supprimer
+      </button>
+    </div>
+
+  </div>
+</div>

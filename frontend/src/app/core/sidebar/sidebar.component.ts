@@ -34,8 +34,10 @@ export class SidebarComponent {
         { label: 'Trottinettes', route: '/trottinettes', icon: 'scooter',  badge: 42 },
         { label: 'Clients',      route: '/clients',      icon: 'users',    badge: 128 },
         { label: 'Réservations', route: '/reservations', icon: 'calendar', badge: 7, badgeType: 'warn' },
+
       ],
     },
+    
     {
       title: 'Compte',
       items: [
@@ -43,7 +45,9 @@ export class SidebarComponent {
         { label: 'Utilisateurs', route: '/utilisateurs', icon: 'team' },
         { label: 'Paramètres',   route: '/parametres',   icon: 'settings' },
       ],
+
     },
+    
   ];
 
   toggle() { this.isOpen = !this.isOpen; }

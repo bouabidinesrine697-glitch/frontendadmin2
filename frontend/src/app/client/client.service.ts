@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClientService {
+  getById(id: string) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8000/client/';
 
   constructor(private http: HttpClient) {}

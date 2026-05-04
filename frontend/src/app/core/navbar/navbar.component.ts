@@ -34,6 +34,8 @@ export class NavbarComponent {
         { label: 'Trottinettes', route: '/trottinette/list', icon: 'scooter',  badge: 42 },
         { label: 'Clients',      route: '/client/clients',      icon: 'users',    badge: 128 },
         { label: 'Réservations', route: '/reservation/list', icon: 'calendar', badge: 7, badgeType: 'warn' },
+                 { label: 'Factures', route: '/facture/', icon: 'scooter', badge: 4, badgeType: 'warn' },
+
       ],
     },
     {
